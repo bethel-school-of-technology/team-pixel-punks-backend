@@ -9,11 +9,11 @@ router.get('/', function (req, res, next) {
   res.send('respond with a resource');
 });
 
-router.get('/signup', function(req, res, next) {
+router.get('/signup', function (req, res, next) {
   res.render('signup');
 });
 
-router.post('/signup', function(req, res, next) {
+router.post('/signup', function (req, res, next) {
   models.users
     .findOrCreate({
       where: {
@@ -26,7 +26,7 @@ router.post('/signup', function(req, res, next) {
         Password: req.body.password
       }
     })
-    .spread(function(result, created) {
+    .spread(function (result, created) {
       if (created) {
         res.redirect('login');
       } else {
@@ -35,42 +35,36 @@ router.post('/signup', function(req, res, next) {
     });
 });
 
-router.get('/login', function(req, res, next) {
+router.get('/login', function (req, res, next) {
   res.render('login');
 });
 
-router.post('/login', function(req, res, next) {
-  models.users
-    .findOne({
-      where: {
-        Username: req.body.username,
-        Password: req.body.password
-      }
-    })
-    .then(user => {
-      if (user) {
-        res.redirect('profile/' + user.UserId);
-      } else {
-        res.send('Invalid login!');
-      }
-    });
-});
-
-router.get('/profile/:id', function (req, res, next) {
-  models.users
-    .findByPk(parseInt(req.params.id))
-    .then(user => {
-      if (user) {
-        res.render('profile', {
-          FirstName: user.FirstName,
-          LastName: user.LastName,
-          Email: user.Email,
-          Username: user.Username
-        });
-      } else {
-        res.send('User not found');
-      }
-    });
+router.post('/login', passport.authenticate('local', {
+  failureRedirect: '/users/login'
+}),
+  function (req, res, next) {
+    res.redirect('profile');
   });
+
+router.get('/profile', function (req, res, next) {
+  if (req.user) {
+    models.users
+      .findByPk(parseInt(req.user.UserId))
+      .then(user => {
+        if (user) {
+          res.render('profile', {
+            FirstName: user.FirstName,
+            LastName: user.LastName,
+            Email: user.Email,
+            Username: user.Username
+          });
+        } else {
+          res.send('User not found');
+        }
+      });
+  } else {
+    res.redirect('/users/login');
+  }
+});
 
 module.exports = router;

@@ -34,4 +34,4 @@
      .catch(err => callback(err));
  });
 
-// module.exports = passport;
+ module.exports = passport;
