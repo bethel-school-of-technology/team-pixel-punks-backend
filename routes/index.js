@@ -23,4 +23,21 @@ router.post('/sign-up', function (req, res, next) {
     });
 });
 
+router.post('/login', function(req, res, next) {
+  models.users
+    .findOne({
+      where: {
+        Username: req.body.username,
+        Password: req.body.password
+      }
+    })
+    .then(user => {
+      if (user) {
+        res.send('Login succeeded!');
+      } else {
+        res.send('Invalid login!');
+      }
+    });
+});
+
 module.exports = router;
