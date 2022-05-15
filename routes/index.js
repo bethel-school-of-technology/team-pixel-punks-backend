@@ -3,6 +3,7 @@ const { registerAsyncHelper } = require('hbs');
 var router = express.Router();
 var mysql = require('mysql2');
 const models = require('../models');
+var passport = require('../services/passport');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -23,21 +24,24 @@ router.post('/sign-up', function (req, res, next) {
     });
 });
 
-router.post('/login', function(req, res, next) {
-  models.users
-    .findOne({
-      where: {
-        Username: req.body.username,
-        Password: req.body.password
-      }
-    })
-    .then(user => {
-      if (user) {
-        res.send('Login succeeded!');
-      } else {
-        res.send('Invalid login!');
-      }
-    });
-});
+router.post('/login', passport.authenticate('local', { failureRedirect: '/users/login' }),
+  function (req, res, next) { res.redirect('profile') });
+
+//router.post('/login', function(req, res, next) {
+//  models.users
+//    .findOne({
+//      where: {
+//        Username: req.body.username,
+//        Password: req.body.password
+//      }
+//    })
+//    .then(user => {
+//      if (user) {
+//        res.send('Login succeeded!');
+//      } else {
+//        res.send('Invalid login!');
+//      }
+//    });
+//});
 
 module.exports = router;
