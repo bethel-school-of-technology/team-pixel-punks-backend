@@ -6,11 +6,11 @@
  // Configure the login validation
  passport.use(
    'local',
-   new LocalStrategy(function (username, password, done) {
-     models.users.findOne({ where: { Username: username } })
+   new LocalStrategy(function (email, password, done) {
+     models.users.findOne({ where: { Email: email } })
        .then(user => {
          if (!user) {
-           return done(null, false, { message: 'Incorrect username.' });
+           return done(null, false, { message: 'Incorrect email.' });
          }
          if (user.Password !== password) {
            return done(null, false, { message: 'Incorrect password.' });

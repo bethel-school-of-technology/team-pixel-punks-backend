@@ -15,10 +15,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         unique: true
       },
-      Username: {
-        type: DataTypes.STRING,
-        unique: true
-      },
       Password: DataTypes.STRING,
       Admin: {
         type: DataTypes.BOOLEAN,
@@ -30,7 +26,6 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: false,
         allowNull: true 
       },
-      Zipcode: DataTypes.INTEGER,
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE
     },

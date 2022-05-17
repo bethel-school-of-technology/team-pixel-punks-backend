@@ -23,11 +23,6 @@
                     "field": "Email",
                     "seqType": "Sequelize.STRING"
                 },
-                "Username": {
-                    "unique": true,
-                    "field": "Username",
-                    "seqType": "Sequelize.STRING"
-                },
                 "Password": {
                     "field": "Password",
                     "seqType": "Sequelize.STRING"
@@ -48,10 +43,6 @@
                     "field": "Deleted",
                     "seqType": "Sequelize.BOOLEAN"
                 },
-                "Zipcode": {
-                    "field": "Zipcode",
-                    "seqType": "Sequelize.INTEGER"
-                },
                 "createdAt": {
                     "field": "createdAt",
                     "seqType": "Sequelize.DATE"
@@ -64,5 +55,5 @@
             "indexes": []
         }
     },
-    "revision": 2
+    "revision": 3
 }

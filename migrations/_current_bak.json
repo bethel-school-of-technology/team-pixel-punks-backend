@@ -32,6 +32,22 @@
                     "field": "Password",
                     "seqType": "Sequelize.STRING"
                 },
+                "Admin": {
+                    "defaultValue": {
+                        "value": false
+                    },
+                    "allowNull": true,
+                    "field": "Admin",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "Deleted": {
+                    "defaultValue": {
+                        "value": false
+                    },
+                    "allowNull": true,
+                    "field": "Deleted",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
                 "Zipcode": {
                     "field": "Zipcode",
                     "seqType": "Sequelize.INTEGER"
@@ -48,5 +64,5 @@
             "indexes": []
         }
     },
-    "revision": 1
+    "revision": 2
 }

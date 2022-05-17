@@ -11,26 +11,25 @@ router.get('/', function (req, res, next) {
 });
 
 //render the signup page when navigating there
-router.get('/signup', function (req, res, next) {
-  res.render('signup');
+router.get('/sign-up', function (req, res, next) {
+  res.render('sign-up');
 });
 
 //take in form for signing up for a new user and redirect
 //to the login page
-router.post('/signup', function (req, res, next) {
+router.post('/sign-up', function (req, res, next) {
   models.users
     .findOrCreate({
       where: {
-        Username: req.body.username
+        Email: req.body.email
       },
       defaults: {
         FirstName: req.body.firstName,
         LastName: req.body.lastName,
-        Email: req.body.email,
         Password: authService.hashPassword(req.body.password)
       }
     })
-    .spread(function (result, created) {
+    .spread(function (response, created) { //should this be res instead of result?
       if (created) {
         res.redirect('login');
       } else {
@@ -48,7 +47,7 @@ router.get('/login', function (req, res, next) {
 router.post('/login', function (req, res, next) {
   models.users.findOne({
     where: {
-      Username: req.body.username
+      Email: req.body.email
     }
   }).then(user => {
     if (!user) {

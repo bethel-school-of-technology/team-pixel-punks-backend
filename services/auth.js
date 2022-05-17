@@ -9,7 +9,7 @@ var authService = {
   signUser: function(user) {
     const token = jwt.sign(
       {
-        Username: user.Username,
+        Email: user.Email,
         UserId: user.UserId
       },
       'secretkey',
