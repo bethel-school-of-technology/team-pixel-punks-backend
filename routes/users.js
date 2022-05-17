@@ -79,6 +79,7 @@ router.get('/profile', function (req, res, next) {
       .then(user => {
         if (user) {
           res.send(JSON.stringify(user));
+          //need to get all locations that have the same userid of user.userid
         } else {
           res.status(401);
           res.send('Invalid authentication token');
@@ -94,6 +95,6 @@ router.get('/profile', function (req, res, next) {
 router.get('/logout', function (req, res, next) {
   res.cookie('jwt', "", { expires: new Date(0) });
   res.send('Logged out');
-  });
+});
 
 module.exports = router;
