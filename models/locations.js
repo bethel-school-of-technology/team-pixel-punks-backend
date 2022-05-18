@@ -3,6 +3,12 @@ module.exports = (sequelize, DataTypes) => {
   var locations = sequelize.define(
     'locations',
     {
+      LocationId: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER
+      },
       UserId: {
         allowNull: false,
         primaryKey: true,
