@@ -3,9 +3,15 @@
         "locations": {
             "tableName": "locations",
             "schema": {
+                "LocationId": {
+                    "allowNull": false,
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "field": "LocationId",
+                    "seqType": "Sequelize.INTEGER"
+                },
                 "UserId": {
                     "allowNull": false,
-                    "primaryKey": true,
                     "field": "UserId",
                     "seqType": "Sequelize.INTEGER"
                 },
@@ -95,5 +101,5 @@
             "indexes": []
         }
     },
-    "revision": 4
+    "revision": 6
 }

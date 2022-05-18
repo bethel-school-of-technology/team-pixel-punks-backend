@@ -1,5 +1,52 @@
 {
     "tables": {
+        "locations": {
+            "tableName": "locations",
+            "schema": {
+                "LocationId": {
+                    "allowNull": false,
+                    "autoIncrement": true,
+                    "primaryKey": true,
+                    "field": "LocationId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "UserId": {
+                    "allowNull": false,
+                    "primaryKey": true,
+                    "field": "UserId",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "Zipcode": {
+                    "allowNull": false,
+                    "field": "Zipcode",
+                    "seqType": "Sequelize.INTEGER"
+                },
+                "Latitude": {
+                    "allowNull": true,
+                    "field": "Latitude",
+                    "seqType": "Sequelize.STRING"
+                },
+                "Longitude": {
+                    "allowNull": true,
+                    "field": "Longitude",
+                    "seqType": "Sequelize.STRING"
+                },
+                "Deleted": {
+                    "allowNull": true,
+                    "field": "Deleted",
+                    "seqType": "Sequelize.BOOLEAN"
+                },
+                "createdAt": {
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
+                }
+            },
+            "indexes": []
+        },
         "users": {
             "tableName": "users",
             "schema": {
@@ -55,5 +102,5 @@
             "indexes": []
         }
     },
-    "revision": 3
+    "revision": 5
 }
