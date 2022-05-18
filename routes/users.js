@@ -69,6 +69,34 @@ router.post('/login', function (req, res, next) {
   });
 });
 
+//update user name
+router.put("/edit-user/:UserId", function (req, res, next) {
+  let token = req.cookies.jwt;
+  if (token) {
+    authService.verifyUser(token)
+      .then(user => {
+        if (user) {
+          res.send(JSON.stringify(user));
+        } else {
+          res.status(401);
+          res.send('Invalid authentication token');
+        }
+      });
+  } else {
+    res.status(401);
+    res.send('Must be logged in');
+  }
+
+  let userId = parseInt(req.params.UserId);
+  models.users
+    .update(req.body, { where: { userId: UserId } })
+    .then(result => res.redirect('/profile/' + userId))
+    .catch(err => {
+      res.status(400);
+      res.send("There was a problem updating your Username.  Please check your information.");
+    });
+});
+
 //profile route will need to be changed to /locations when connecting
 //to the front end, i used the one from the lesson to get it working
 //for now.
@@ -90,6 +118,7 @@ router.get('/profile', function (req, res, next) {
     res.send('Must be logged in');
   }
 });
+
 
 //route for logging the user out, and clearing the jwt token
 router.get('/logout', function (req, res, next) {
