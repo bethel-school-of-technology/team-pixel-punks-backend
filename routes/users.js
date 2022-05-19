@@ -77,27 +77,37 @@ router.put('/profile/:id', function (req, res, next) {
     authService.verifyUser(token)
       .then(user => {
         if (user) {
-          res.send(JSON.stringify(user));
+
+
+          console.log(user);
+ 
+          models.users
+          // .updateOne({
+          //   where: {
+          //     UserId: user.UserId
+          //   }
+          // })
+            .update(req.body, { where: { UserId: user.UserId } })
+            .then(result => res.json({message:'Update sucessful'}))
+            .catch(err => {
+              res.status(400);
+              res.send('There was a problem updating your Username.  Please check your information.');
+            });
+
+
+
         } else {
           res.status(401);
           res.send('Invalid authentication token');
+          return;
         }
       });
   } else {
     res.status(401);
-    res.send('Must be logged in');
+    res.json({message:'Must be logged in'});
+    return;
   }
-  models.users.updateOne({
-    where: {
-      Email: req.body.email
-    }
-  })
-    .update(req.body, { where: { userId: userId } })
-    .then(result => res.redirect('/profile/' + userId))
-    .catch(err => {
-      res.status(400);
-      res.send('There was a problem updating your Username.  Please check your information.');
-    });
+  
 
   
 });
