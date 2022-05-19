@@ -82,11 +82,7 @@ router.put('/profile/:id', function (req, res, next) {
           console.log(user);
  
           models.users
-          // .updateOne({
-          //   where: {
-          //     UserId: user.UserId
-          //   }
-          // })
+
             .update(req.body, { where: { UserId: user.UserId } })
             .then(result => res.json({message:'Update sucessful'}))
             .catch(err => {
