@@ -45,22 +45,28 @@ router.get('/login', function (req, res, next) {
 
 //take in username and password, authenticate the user or give them the boot
 router.post('/login', function (req, res, next) {
+  console.log(req.body.email)
   models.users.findOne({
     where: {
       Email: req.body.email
     }
   }).then(user => {
+    console.log(user)
     if (!user) {
       console.log('User not found')
       return res.status(401).json({
         message: "Login Failed"
       });
     } else {
+    
+
       let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
+ 
       if (passwordMatch) {
         let token = authService.signUser(user);
-        res.cookie('jwt', token);
-        res.redirect('profile');
+        console.log(token)
+        res.json({jwt: token});
+        // res.redirect('profile');
       } else {
         console.log('Wrong password');
         res.send('Wrong password');
@@ -72,8 +78,8 @@ router.post('/login', function (req, res, next) {
 //profile route will need to be changed to /locations when connecting
 //to the front end, i used the one from the lesson to get it working
 //for now.
-router.get('/profile', function (req, res, next) {
-  let token = req.cookies.jwt;
+router.get('/locations', function (req, res, next) {
+  let token = req.body.jwt;
   if (token) {
     authService.verifyUser(token)
       .then(user => {
