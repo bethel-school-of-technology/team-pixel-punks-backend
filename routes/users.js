@@ -97,6 +97,44 @@ router.get('/locations', function (req, res, next) {
   }
 });
 
+//not sure if these 2 add-location routes are working
+router.get('/add-location', function (req, res, next) {
+  let token = req.body.jwt;
+  if (token) {
+    authService.verifyUser(token)
+      .then(user => {
+        if (user) {
+          res.render('locations', {
+            Zipcode: locations.Zipcode
+          });
+        } else {
+          res.status(401);
+          res.send('Invalid authentication token');
+        }
+      });
+  } else {
+    res.status(401);
+    res.send('Must be logged in');
+  }
+});
+
+//route for adding a new location 
+router.post('/add-location', function (req, res, next) {
+  models.locations.findOrCreate({
+    where: {
+      Email: req.body.email
+    }
+  })
+  .spread(function (result, created) {
+    if (created) {
+      res.send('New location added!');
+    } else {
+      res.send('Could not add location!');
+    }
+  });
+});
+
+
 //route for logging the user out, and clearing the jwt token
 router.get('/logout', function (req, res, next) {
   res.cookie('jwt', "", { expires: new Date(0) });
