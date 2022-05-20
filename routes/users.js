@@ -45,33 +45,23 @@ router.get('/login', function (req, res, next) {
 
 //take in username and password, authenticate the user or give them the boot
 router.post('/login', function (req, res, next) {
-  //console.log(req.body.email)
-
-  //find entered user by email address
   models.users.findOne({
     where: {
       Email: req.body.email
     }
   }).then(user => {
-    //check to see if a user was found
-    //console.log(user)
     if (!user) {
-      //display error if user was not found
       console.log('User not found')
       return res.status(401).json({
         message: "Login Failed"
       });
     } else {
-      //if a user was found, check password for authentications
       let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
- 
       if (passwordMatch) {
-        //if the password matches, create a web token to authorize the user
         let token = authService.signUser(user);
-        console.log(token)
-        res.json({jwt: token});
+        res.cookie('jwt', token);
+        res.redirect('profile');
       } else {
-        //display error if user entred invalid information.
         console.log('Wrong password');
         res.send('Wrong password');
       }
@@ -79,52 +69,22 @@ router.post('/login', function (req, res, next) {
   });
 });
 
-//update user name
-router.put('/profile/:id', function (req, res, next) {
-
-  let token = req.cookies.jwt;
-  if (token) {
-    authService.verifyUser(token)
-      .then(user => {
-        if (user) {
-
-
-          console.log(user);
- 
-          models.users
-          // .updateOne({
-          //   where: {
-          //     UserId: user.UserId
-          //   }
-          // })
-            .update(req.body, { where: { UserId: user.UserId } })
-            .then(result => res.json({message:'Update sucessful'}))
-            .catch(err => {
-              res.status(400);
-              res.send('There was a problem updating your Username.  Please check your information.');
-            });
-
-
-
-        } else {
-          res.status(401);
-          res.send('Invalid authentication token');
-          return;
-        }
-      });
-  } else {
-    res.status(401);
-    res.json({message:'Must be logged in'});
-    return;
-  }
+router.put('/locations/:id', function(req, res) {
+  let userId = parseInt(req.params.id);
+  models.users
+  .update(req.body, { where: { UserId: userId } })
+    .then(result => res.redirect('/users/logout'))
+    .catch(err => {
+      res.status(400);
+      res.send("there was a problem, sound the alarms!");
+    })
 });
 
-//locations route will need to be changed to /locations when connecting
+//profile route will need to be changed to /locations when connecting
 //to the front end, i used the one from the lesson to get it working
 //for now.
-router.get('/locations', function (req, res, next) {
-  let token = req.body.jwt;
-  console.log('found locations route');
+router.get('/profile', function (req, res, next) {
+  let token = req.cookies.jwt;
   if (token) {
     authService.verifyUser(token)
       .then(user => {
