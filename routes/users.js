@@ -69,43 +69,15 @@ router.post('/login', function (req, res, next) {
   });
 });
 
-//update user name
-router.put('/profile/:id', function (req, res, next) {
-
-  let token = req.cookies.jwt;
-  if (token) {
-    authService.verifyUser(token)
-      .then(user => {
-        if (user) {
-
-
-          console.log(user);
- 
-          models.users
-
-            .update(req.body, { where: { UserId: user.UserId } })
-            .then(result => res.json({message:'Update sucessful'}))
-            .catch(err => {
-              res.status(400);
-              res.send('There was a problem updating your Username.  Please check your information.');
-            });
-
-
-
-        } else {
-          res.status(401);
-          res.send('Invalid authentication token');
-          return;
-        }
-      });
-  } else {
-    res.status(401);
-    res.json({message:'Must be logged in'});
-    return;
-  }
-  
-
-  
+router.put('/locations/:id', function(req, res) {
+  let userId = parseInt(req.params.id);
+  models.users
+  .update(req.body, { where: { UserId: userId } })
+    .then(result => res.redirect('/users/logout'))
+    .catch(err => {
+      res.status(400);
+      res.send("there was a problem, sound the alarms!");
+    })
 });
 
 //profile route will need to be changed to /locations when connecting
