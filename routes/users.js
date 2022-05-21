@@ -99,30 +99,34 @@ router.get('/locations', function (req, res, next) {
 
 //not sure if these 2 add-location routes are working
 router.get('/add-location', function (req, res, next) {
-  let token = req.body.jwt;
-  if (token) {
-    authService.verifyUser(token)
-      .then(user => {
-        if (user) {
-          res.render('locations', {
-            Zipcode: locations.Zipcode
-          });
-        } else {
-          res.status(401);
-          res.send('Invalid authentication token');
-        }
-      });
-  } else {
-    res.status(401);
-    res.send('Must be logged in');
-  }
+  // let token = req.body.jwt;
+  // if (token) {
+  //   authService.verifyUser(token)
+  //     .then(user => {
+  //       if (user) {
+  //         res.render('locations', {
+  //           Zipcode: locations.Zipcode
+  //         });
+  //       } else {
+  //         res.status(401);
+  //         res.send('Invalid authentication token');
+  //       }
+  //     });
+  // } else {
+  //   res.status(401);
+  //   res.send('Must be logged in');
+  // }
+  res.render('add-location');
 });
 
 //route for adding a new location 
 router.post('/add-location', function (req, res, next) {
   models.locations.findOrCreate({
     where: {
-      Email: req.body.email
+      Zipcode: req.body.zipcode,
+      UserId: 4, //req.body.userId,  substitute this in when connecting to front end.
+      Latitude: "38.536",  //req.body.latitude, substitute this in when connecting to front end.
+      Longitude: "-104.654" //req.body.longitude  substitute this in when connecting to front end.
     }
   })
   .spread(function (result, created) {
