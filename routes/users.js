@@ -75,26 +75,18 @@ router.post('/login', function (req, res, next) {
   });
 });
 
-//profile route will need to be changed to /locations when connecting
-//to the front end, i used the one from the lesson to get it working
-//for now.
-router.get('/locations', function (req, res, next) {
-  let token = req.body.jwt;
-  if (token) {
-    authService.verifyUser(token)
-      .then(user => {
-        if (user) {
-          res.send(JSON.stringify(user));
-          //need to get all locations that have the same userid of user.userid
-        } else {
-          res.status(401);
-          res.send('Invalid authentication token');
-        }
-      });
-  } else {
-    res.status(401);
-    res.send('Must be logged in');
-  }
+//gather all locations from locations table for a given userId passed 
+//from the front end via req.body.userId
+router.get('/locations', function (req, res) {
+  //add auth code here after connecting to front end
+  models.locations.findAll({
+    where: {
+      UserId: req.body.userId
+    }
+  }).then(locationsFound => {
+    res.setHeader('Content-Type', 'applications/json');
+    res.send(JSON.stringify(locationsFound))
+  });
 });
 
 //this route is not needed as there is no page to render in order to add a location
