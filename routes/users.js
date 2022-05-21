@@ -58,14 +58,14 @@ router.post('/login', function (req, res, next) {
         message: "Login Failed"
       });
     } else {
-    
+
 
       let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
- 
+
       if (passwordMatch) {
         let token = authService.signUser(user);
         console.log(token)
-        res.json({jwt: token});
+        res.json({ jwt: token });
         // res.redirect('profile');
       } else {
         console.log('Wrong password');
@@ -115,13 +115,23 @@ router.post('/add-location', function (req, res, next) {
       Longitude: "-104.654" //req.body.longitude  substitute this in when connecting to front end.
     }
   })
-  .spread(function (result, created) {
-    if (created) {
-      res.send('New location added!');
-    } else {
-      res.send('Could not add location!');
-    }
-  });
+    .spread(function (result, created) {
+      if (created) {
+        res.send('New location added!');
+      } else {
+        res.send('Could not add location!');
+      }
+    });
+});
+
+//route to change deleted attribute to true.  
+router.post('/delete-location', function (req, res) {
+  //add authentication check here
+  models.locations
+    .update(
+      { Deleted: true },
+      { where: { LocationId: req.body.locationId } })
+    .then(res.send('location deleted'))
 });
 
 
