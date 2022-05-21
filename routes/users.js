@@ -81,7 +81,8 @@ router.get('/locations', function (req, res) {
   //add auth code here after connecting to front end
   models.locations.findAll({
     where: {
-      UserId: req.body.userId
+      UserId: req.body.userId,
+      Deleted: false
     }
   }).then(locationsFound => {
     res.setHeader('Content-Type', 'applications/json');
