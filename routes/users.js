@@ -97,29 +97,15 @@ router.get('/locations', function (req, res, next) {
   }
 });
 
-//not sure if these 2 add-location routes are working
-router.get('/add-location', function (req, res, next) {
-  // let token = req.body.jwt;
-  // if (token) {
-  //   authService.verifyUser(token)
-  //     .then(user => {
-  //       if (user) {
-  //         res.render('locations', {
-  //           Zipcode: locations.Zipcode
-  //         });
-  //       } else {
-  //         res.status(401);
-  //         res.send('Invalid authentication token');
-  //       }
-  //     });
-  // } else {
-  //   res.status(401);
-  //   res.send('Must be logged in');
-  // }
-  res.render('add-location');
-});
+//this route is not needed as there is no page to render in order to add a location
+//this will be done on the /locations list page
+// router.get('/add-location', function (req, res, next) {
+//   res.render('add-location');
+// });
 
-//route for adding a new location 
+//route for adding a new location will need to be secured once connected to the front end
+//once the front end is able to send the userid, lat,long along with the zipcode, we can
+//substitute the code bellow that is commented out.
 router.post('/add-location', function (req, res, next) {
   models.locations.findOrCreate({
     where: {
