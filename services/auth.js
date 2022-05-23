@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
-const models = require('../models/index');
+const { userInfo } = require('os');
+const models = require('../models');
 const bcrypt = require("bcryptjs");
+
+const { User } = require("../models");
 
 //define the object that does the authentication service
 var authService = {
@@ -10,7 +13,9 @@ var authService = {
     const token = jwt.sign(
       {
         Email: user.Email,
-        UserId: user.UserId
+        UserId: user.UserId,
+        FirstName: user.FirstName,
+        LastName: user.LastName
       },
       'secretkey',
       {
@@ -21,15 +26,15 @@ var authService = {
   },
 
   //verify the user is authorized
-  verifyUser: function (token) {  //<--- receive JWT token as parameter
-    try {
-      let decoded = jwt.verify(token, 'secretkey'); //<--- Decrypt token using same key used to encrypt
-      return models.users.findByPk(decoded.UserId); //<--- Return result of database query as promise
-    } catch (err) {
-      console.log(err);
-      return null;
-    }
-  },
+  // verifyUser: function (token) {  //<--- receive JWT token as parameter
+  //   try {
+  //     let decoded = jwt.verify(token, 'secretkey'); //<--- Decrypt token using same key used to encrypt
+  //     return models.users.findByPk(decoded.UserId); //<--- Return result of database query as promise
+  //   } catch (err) {
+  //     console.log(err);
+  //     return null;
+  //   }
+  // },
 
   //encrypt the password
   hashPassword: function(plainTextPassword) {

@@ -4,6 +4,8 @@ var router = express.Router();
 const models = require('../models');
 var passport = require('../services/passport');
 var authService = require('../services/auth');
+//const bcrypt = require('bcryptjs/dist/bcrypt');
+
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -45,34 +47,28 @@ router.get('/login', function (req, res, next) {
 
 //take in username and password, authenticate the user or give them the boot
 router.post('/login', function (req, res, next) {
-  console.log(req.body.email)
   models.users.findOne({
     where: {
       Email: req.body.email
     }
-  }).then(user => {
+  }).then(async user => {
     console.log(user)
     if (!user) {
-      console.log('User not found')
-      return res.status(401).json({
-        message: "Login Failed"
-      });
+      res.status(404).send('invalid user');
+      return;
     } else {
+      const valid = true;
+      //const valid = await bcrypt.compare(req.body.password, user.password);
+      //let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
 
-
-      let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
-
-      if (passwordMatch) {
-        let token = authService.signUser(user);
-        console.log(token)
-        res.json({ jwt: token });
-        // res.redirect('profile');
+      if (valid) {
+        const jwt = authService.signUser(user);
+        res.status(200).send({ jwt });
       } else {
-        console.log('Wrong password');
-        res.send('Wrong password');
+        res.status(401).send('invalid login credentials');
       }
     }
-  });
+  })
 });
 
 //gather all locations from locations table for a given userId passed 
