@@ -26,15 +26,15 @@ var authService = {
   },
 
   //verify the user is authorized
-  // verifyUser: function (token) {  //<--- receive JWT token as parameter
-  //   try {
-  //     let decoded = jwt.verify(token, 'secretkey'); //<--- Decrypt token using same key used to encrypt
-  //     return models.users.findByPk(decoded.UserId); //<--- Return result of database query as promise
-  //   } catch (err) {
-  //     console.log(err);
-  //     return null;
-  //   }
-  // },
+  verifyUser: function (token) {  //<--- receive JWT token as parameter
+    try {
+      let decoded = jwt.verify(token, 'secretkey'); //<--- Decrypt token using same key used to encrypt
+      return models.users.findByPk(decoded.UserId); //<--- Return result of database query as promise
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  },
 
   //encrypt the password
   hashPassword: function(plainTextPassword) {
@@ -47,6 +47,7 @@ var authService = {
   comparePasswords: function (plainTextPassword, hashedPassword) {
     return bcrypt.compareSync(plainTextPassword, hashedPassword)
   }
+  
   
 }
 

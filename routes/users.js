@@ -62,8 +62,8 @@ router.post('/login', function (req, res, next) {
       //let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
 
       if (valid) {
-        const jwt = authService.signUser(user);
-        res.status(200).send({ jwt });
+        const token = authService.signUser(user);
+        res.status(200).cookie('jwt', token).send('login successful');
       } else {
         res.status(401).send('invalid login credentials');
       }
@@ -74,23 +74,26 @@ router.post('/login', function (req, res, next) {
 //gather all locations from locations table for a given userId passed 
 //from the front end via req.body.userId
 router.get('/locations', function (req, res) {
-  //add auth code here after connecting to front end
-  models.locations.findAll({
-    where: {
-      UserId: req.body.userId,
-      Deleted: false
+  let token = req.cookies.jwt;
+  authService.verifyUser(token).then(user => {
+    if (user) {
+      //res.send(JSON.stringify(user));
+      //console.log(user.userId);
+      models.locations.findAll({
+        where: {
+          UserId: user.UserId,
+          Deleted: false
+        }
+      }).then(locationsFound => {
+        //res.setHeader('Content-Type', 'applications/json');
+        res.send({user: user, locations: locationsFound});
+      })
+    } else {
+      res.status(401).send('must be logged in');
     }
-  }).then(locationsFound => {
-    res.setHeader('Content-Type', 'applications/json');
-    res.send(JSON.stringify(locationsFound))
-  });
-});
+  })
 
-//this route is not needed as there is no page to render in order to add a location
-//this will be done on the /locations list page
-// router.get('/add-location', function (req, res, next) {
-//   res.render('add-location');
-// });
+})
 
 //route for adding a new location will need to be secured once connected to the front end
 //once the front end is able to send the userid, lat,long along with the zipcode, we can
