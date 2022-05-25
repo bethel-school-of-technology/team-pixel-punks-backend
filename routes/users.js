@@ -31,13 +31,16 @@ router.post('/sign-up', function (req, res, next) {
         Password: authService.hashPassword(req.body.password)
       }
     })
-    .spread(function (response, created) { //should this be res instead of result?
+    .then(function (res, created) { //should this be res instead of result?
       if (created) {
-        res.redirect('login');
+        res.send('user created');
+        console.log('user created');
       } else {
-        res.send('This user already exists');
+        console.log('error');
+        res.send('this user already exists');
       }
     });
+  res.send('great job!');
 });
 
 //render the login page when navigating to this route
