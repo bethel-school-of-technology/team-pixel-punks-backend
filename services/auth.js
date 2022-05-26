@@ -26,7 +26,8 @@ var authService = {
   },
 
   //verify the user is authorized
-  verifyUser: function (token) {  //<--- receive JWT token as parameter
+  verifyUser: function (authHeader) {  //<--- receive JWT token as parameter
+    const token = authHeader && authHeader.split(' ')[1]
     try {
       let decoded = jwt.verify(token, 'secretkey'); //<--- Decrypt token using same key used to encrypt
       return models.users.findByPk(decoded.UserId); //<--- Return result of database query as promise

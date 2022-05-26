@@ -57,7 +57,7 @@ router.post('/login', function (req, res, next) {
   }).then(async user => {
     console.log(user)
     if (!user) {
-      res.status(404).send('invalid user');
+      res.status(401).send('invalid user');
       return;
     } else {
       const valid = true;
@@ -66,7 +66,7 @@ router.post('/login', function (req, res, next) {
 
       if (valid) {
         const token = authService.signUser(user);
-        res.status(200).cookie('jwt', token).send('login successful');
+        res.status(200).cookie('jwt', token).send({token, user});
       } else {
         res.status(401).send('invalid login credentials');
       }
@@ -77,7 +77,7 @@ router.post('/login', function (req, res, next) {
 //gather all locations from locations table for a given userId passed 
 //from the front end via req.body.userId
 router.get('/locations', function (req, res) {
-  let token = req.cookies.jwt;
+  let token = req.headers.authorization;
   authService.verifyUser(token).then(user => {
     if (user) {
       //res.send(JSON.stringify(user));
