@@ -4,18 +4,7 @@ var router = express.Router();
 const models = require('../models');
 var passport = require('../services/passport');
 var authService = require('../services/auth');
-//const bcrypt = require('bcryptjs/dist/bcrypt');
-
-
-/* GET users listing. */
-router.get('/', function (req, res, next) {
-  res.send('respond with a resource');
-});
-
-//render the signup page when navigating there
-router.get('/sign-up', function (req, res, next) {
-  res.render('sign-up');
-});
+const bcrypt = require('bcryptjs/dist/bcrypt');
 
 //take in form for signing up for a new user and redirect
 //to the login page
@@ -43,11 +32,6 @@ router.post('/sign-up', function (req, res, next) {
   res.send('great job!');
 });
 
-//render the login page when navigating to this route
-router.get('/login', function (req, res, next) {
-  res.render('login');
-});
-
 //take in username and password, authenticate the user or give them the boot
 router.post('/login', function (req, res, next) {
   models.users.findOne({
@@ -55,20 +39,17 @@ router.post('/login', function (req, res, next) {
       Email: req.body.email
     }
   }).then(async user => {
-    console.log(user)
+    
     if (!user) {
-      res.status(401).send('invalid user');
-      return;
+      console.log('no user found');
     } else {
-      const valid = true;
-      //const valid = await bcrypt.compare(req.body.password, user.password);
-      //let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
+      let passwordMatch = authService.comparePasswords(req.body.password, user.Password);
 
-      if (valid) {
+      if (passwordMatch) {
         const token = authService.signUser(user);
         res.status(200).cookie('jwt', token).send({token, user});
       } else {
-        res.status(401).send('invalid login credentials');
+        res.status(401).send('invalid login');
       }
     }
   })
