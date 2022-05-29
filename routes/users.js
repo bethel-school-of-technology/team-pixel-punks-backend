@@ -55,8 +55,7 @@ router.post('/login', function (req, res, next) {
   })
 });
 
-//gather all locations from locations table for a given userId passed 
-//from the front end via req.body.userId
+//gather all locations from locations table for a given userId
 router.get('/locations', function (req, res) {
   let token = req.headers.authorization;
   authService.verifyUser(token).then(user => {
