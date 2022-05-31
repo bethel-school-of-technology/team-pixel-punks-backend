@@ -84,13 +84,11 @@ router.get('/locations', function (req, res) {
 router.post('/add-location', function (req, res, next) {
   models.locations.findOrCreate({
     where: {
-      Zipcode: req.body.zipcode,
-      UserId: req.body.userId, //req.body.userId,  substitute this in when connecting to front end.
-      //Latitude: "38.536",  //req.body.latitude, substitute this in when connecting to front end.
-      //Longitude: "-104.654" //req.body.longitude  substitute this in when connecting to front end.
-    }
+      Zipcode: req.body.zipcode
+    },
+    defaults: { UserId: req.body.userId}
   })
-    .spread(function (result, created) {
+    .then((result, created) => {
       if (created) {
         res.send('New location added!');
       } else {
