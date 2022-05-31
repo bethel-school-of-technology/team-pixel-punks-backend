@@ -85,9 +85,9 @@ router.post('/add-location', function (req, res, next) {
   models.locations.findOrCreate({
     where: {
       Zipcode: req.body.zipcode,
-      UserId: 4, //req.body.userId,  substitute this in when connecting to front end.
-      Latitude: "38.536",  //req.body.latitude, substitute this in when connecting to front end.
-      Longitude: "-104.654" //req.body.longitude  substitute this in when connecting to front end.
+      UserId: req.body.userId, //req.body.userId,  substitute this in when connecting to front end.
+      //Latitude: "38.536",  //req.body.latitude, substitute this in when connecting to front end.
+      //Longitude: "-104.654" //req.body.longitude  substitute this in when connecting to front end.
     }
   })
     .spread(function (result, created) {
@@ -105,15 +105,15 @@ router.post('/delete-location', function (req, res) {
   models.locations
     .update(
       { Deleted: true },
-      { where: { LocationId: req.body.locationId } })
+      { where: { LocationId: req.body.id } })
     .then(res.send('location deleted'))
 });
 
-
 //route for logging the user out, and clearing the jwt token
 router.get('/logout', function (req, res, next) {
-  res.cookie('jwt', "", { expires: new Date(0) });
-  res.send('Logged out');
+  token = "";
+  res.send(token);
+  console.log('Logged out');
 });
 
 module.exports = router;
