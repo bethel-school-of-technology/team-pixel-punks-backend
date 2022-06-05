@@ -114,4 +114,12 @@ router.get('/logout', function (req, res, next) {
   console.log('Logged out');
 });
 
+router.put('/update-city', function(req, res) {
+  models.locations
+  .update(
+    { City: req.body.City },
+    { where: { LocationId: req.body.LocationId } })
+  .then(res.send('City Name Updated'))
+});
+
 module.exports = router;
