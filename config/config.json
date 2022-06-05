@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "Password1!",
-    "database": "Hot_and_Cold",
+    "database": "hot_and_cold",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
