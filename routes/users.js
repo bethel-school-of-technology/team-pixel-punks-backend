@@ -104,7 +104,6 @@ router.post('/delete-location', function (req, res) {
     .update(
       { Deleted: true },
       { where: { LocationId: req.body.id } })
-    .then(res.send('location deleted'))
 });
 
 //route for logging the user out, and clearing the jwt token
@@ -115,11 +114,12 @@ router.get('/logout', function (req, res, next) {
 });
 
 router.put('/update-city', function(req, res) {
+  //add authentication here
+  console.log(req.body.city)
   models.locations
   .update(
-    { City: req.body.City },
-    { where: { LocationId: req.body.LocationId } })
-  .then(res.send('City Name Updated'))
+    { City: req.body.city },
+    { where: { LocationId: req.body.locationId.id } })
 });
 
 module.exports = router;
