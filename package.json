@@ -20,25 +20,8 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.16",
-<<<<<<< Updated upstream
     "passport": "^0.5.3",
     "passport-local": "^1.0.0",
     "sequelize": "^6.19.2"
   }
-=======
-    "sequelize": "^4.43.0"
-  },
-  "main": "app.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bethel-school-of-technology/team-pixel-punks-backend.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/bethel-school-of-technology/team-pixel-punks-backend/issues"
-  },
-  "homepage": "https://github.com/bethel-school-of-technology/team-pixel-punks-backend#readme",
-  "description": ""
->>>>>>> Stashed changes
 }
