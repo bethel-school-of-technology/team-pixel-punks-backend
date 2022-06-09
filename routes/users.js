@@ -84,7 +84,9 @@ router.get('/locations', function (req, res) {
 router.post('/add-location', function (req, res, next) {
   models.locations.findOrCreate({
     where: {
-      Zipcode: req.body.zipcode
+      Zipcode: req.body.zipcode,
+      Latitude: req.body.latitude,
+      Longitude: req.body.longitude
     },
     defaults: { UserId: req.body.userId}
   })
@@ -101,8 +103,7 @@ router.post('/add-location', function (req, res, next) {
 router.post('/delete-location', function (req, res) {
   //add authentication check here
   models.locations
-    .update(
-      { Deleted: true },
+    .destroy(
       { where: { LocationId: req.body.id } })
 });
 
