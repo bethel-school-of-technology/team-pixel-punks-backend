@@ -21,13 +21,7 @@ router.post('/sign-up', function (req, res, next) {
       }
     })
     .then(function (res, created) { //should this be res instead of result?
-      if (created) {
-        res.send('user created');
-        console.log('user created');
-      } else {
-        console.log('error');
-        res.send('this user already exists');
-      }
+      console.log("it worked")
     });
   res.send('great job!');
 });
