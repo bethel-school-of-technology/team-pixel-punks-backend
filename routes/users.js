@@ -5,6 +5,7 @@ const models = require('../models');
 var passport = require('../services/passport');
 var authService = require('../services/auth');
 const bcrypt = require('bcryptjs/dist/bcrypt');
+const { registerHelper } = require('hbs');
 
 //take in form for signing up for a new user and redirect
 //to the login page
@@ -80,7 +81,8 @@ router.post('/add-location', function (req, res, next) {
     where: {
       Zipcode: req.body.zipcode,
       Latitude: req.body.latitude,
-      Longitude: req.body.longitude
+      Longitude: req.body.longitude,
+      City: req.body.city
     },
     defaults: { UserId: req.body.userId}
   })
