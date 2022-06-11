@@ -77,21 +77,19 @@ router.get('/locations', function (req, res) {
 //once the front end is able to send the userid, lat,long along with the zipcode, we can
 //substitute the code bellow that is commented out.
 router.post('/add-location', function (req, res, next) {
+  console.log('location added')
   models.locations.findOrCreate({
     where: {
       Zipcode: req.body.zipcode,
       Latitude: req.body.latitude,
       Longitude: req.body.longitude,
-      City: req.body.city
+      City: req.body.city,
+      UserId: req.body.userId
     },
     defaults: { UserId: req.body.userId}
   })
-    .then((result, created) => {
-      if (created) {
-        res.send('New location added!');
-      } else {
-        res.send('Could not add location!');
-      }
+    .then((response) => {
+        res.json(response);
     });
 });
 
@@ -100,7 +98,9 @@ router.post('/delete-location', function (req, res) {
   //add authentication check here
   models.locations
     .destroy(
-      { where: { LocationId: req.body.id } })
+      { where: { LocationId: req.body.id } }).then(response => {
+        res.json(response);
+      })
 });
 
 //route for logging the user out, and clearing the jwt token
